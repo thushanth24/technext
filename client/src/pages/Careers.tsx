@@ -7,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { 
   MapPin, 
   DollarSign, 
@@ -16,6 +15,7 @@ import {
   Upload,
   X
 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 interface JobListing {
   id: string;
@@ -128,8 +128,21 @@ export default function Careers() {
 
   const applicationMutation = useMutation({
     mutationFn: async (data: ApplicationFormData) => {
-      const response = await apiRequest("POST", "/api/careers/apply", data);
-      return response.json();
+      const { error } = await supabase
+        .from('job_applications')
+        .insert([{
+          position: data.position,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          email: data.email,
+          phone: data.phone,
+          resume_url: data.resumeUrl,
+          cover_letter: data.coverLetter,
+          created_at: new Date().toISOString()
+        }]);
+      
+      if (error) throw error;
+      return { success: true };
     },
     onSuccess: () => {
       toast({

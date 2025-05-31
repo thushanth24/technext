@@ -6,13 +6,23 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
 import { useState } from "react";
 import { Search, Calendar, User } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function Blog() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
   const { data: blogPosts = [], isLoading } = useQuery({
-    queryKey: ["/api/blog"],
+    queryKey: ["blog-posts"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      return data;
+    }
   });
 
   const categories = [

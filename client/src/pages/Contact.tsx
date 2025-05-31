@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function Contact() {
   const { toast } = useToast();
@@ -24,8 +24,21 @@ export default function Contact() {
 
   const contactMutation = useMutation({
     mutationFn: async (data: typeof formData) => {
-      const response = await apiRequest("POST", "/api/contact", data);
-      return response.json();
+      const { error } = await supabase
+        .from('contact_messages')
+        .insert([{
+          first_name: data.firstName,
+          last_name: data.lastName,
+          email: data.email,
+          phone: data.phone,
+          company: data.company,
+          service: data.service,
+          message: data.message,
+          created_at: new Date().toISOString()
+        }]);
+      
+      if (error) throw error;
+      return { success: true };
     },
     onSuccess: () => {
       toast({
