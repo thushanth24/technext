@@ -35,7 +35,7 @@ export default function Header() {
               <Building className="w-6 h-6 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold text-primary dark:text-accent">
-              Sterling Civil
+            Technext
             </span>
           </Link>
 

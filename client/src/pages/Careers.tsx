@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { 
   MapPin, 
   DollarSign, 
@@ -54,83 +54,25 @@ export default function Careers() {
     coverLetter: ""
   });
 
-  const jobListings: JobListing[] = [
-    {
-      id: "1",
-      title: "Senior Civil Engineer",
-      department: "Infrastructure",
-      type: "Full-time",
-      location: "San Francisco, CA",
-      salary: "$120,000 - $150,000",
-      description: "We're seeking an experienced civil engineer to lead infrastructure design projects. The ideal candidate will have 8+ years of experience in transportation and municipal engineering.",
-      requirements: [
-        "Bachelor's degree in Civil Engineering",
-        "PE License required",
-        "8+ years of infrastructure design experience",
-        "Proficiency in AutoCAD and Civil 3D",
-        "Strong project management skills"
-      ],
-      benefits: [
-        "Competitive salary with performance bonuses",
-        "Comprehensive health insurance",
-        "401(k) with company matching",
-        "Professional development opportunities"
-      ],
-      color: "border-l-primary"
-    },
-    {
-      id: "2",
-      title: "Environmental Engineer",
-      department: "Environmental",
-      type: "Full-time",
-      location: "San Francisco, CA",
-      salary: "$95,000 - $125,000",
-      description: "Join our environmental team to work on sustainability projects and environmental impact assessments. Experience with LEED certification and green infrastructure preferred.",
-      requirements: [
-        "Bachelor's degree in Environmental Engineering",
-        "3+ years of environmental consulting experience",
-        "LEED AP certification preferred",
-        "Knowledge of environmental regulations",
-        "Strong analytical and communication skills"
-      ],
-      benefits: [
-        "Health, dental, and vision insurance",
-        "Flexible work arrangements",
-        "Continuing education support",
-        "Green commute benefits"
-      ],
-      color: "border-l-green-500"
-    },
-    {
-      id: "3",
-      title: "Project Manager",
-      department: "Management",
-      type: "Full-time",
-      location: "San Francisco, CA",
-      salary: "$110,000 - $140,000",
-      description: "Lead complex engineering projects from conception to completion. Strong communication skills and experience with project management software required.",
-      requirements: [
-        "Bachelor's degree in Engineering or related field",
-        "5+ years of project management experience",
-        "PMP certification preferred",
-        "Experience with construction projects",
-        "Excellent leadership and communication skills"
-      ],
-      benefits: [
-        "Leadership development programs",
-        "Performance-based bonuses",
-        "Comprehensive benefits package",
-        "Paid time off and holidays"
-      ],
-      color: "border-l-accent"
+  // Fetch job listings from Supabase
+  const { data: jobListings = [], isLoading, error } = useQuery({
+    queryKey: ["job_listings"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('job_listings')
+        .select('*')
+        .order('title', { ascending: true });
+      if (error) throw error;
+      return data;
     }
-  ];
+  });
 
   const applicationMutation = useMutation({
     mutationFn: async (data: ApplicationFormData) => {
       const { error } = await supabase
         .from('job_applications')
         .insert([{
+          job_id: selectedJob?.id || null,
           position: data.position,
           first_name: data.firstName,
           last_name: data.lastName,
@@ -140,7 +82,6 @@ export default function Careers() {
           cover_letter: data.coverLetter,
           created_at: new Date().toISOString()
         }]);
-      
       if (error) throw error;
       return { success: true };
     },
@@ -158,8 +99,6 @@ export default function Careers() {
         resumeUrl: "",
         coverLetter: ""
       });
-      setShowApplicationForm(false);
-      setSelectedJob(null);
     },
     onError: (error: any) => {
       toast({
@@ -169,6 +108,16 @@ export default function Careers() {
       });
     },
   });
+
+  // Show loading or error states
+  if (isLoading) {
+    return <div className="container mx-auto px-6 py-24 text-center">Loading current openings...</div>;
+  }
+  if (error) {
+    return <div className="container mx-auto px-6 py-24 text-center text-red-600">Failed to load openings: {error.message}</div>;
+  }
+
+
 
   const handleApplyClick = (job: JobListing) => {
     setSelectedJob(job);

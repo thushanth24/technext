@@ -2,71 +2,41 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Linkedin, Mail } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+
+interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  description?: string;
+  image_url?: string;
+  specialties?: string[];
+  email?: string;
+  linkedin?: string;
+}
 
 export default function Team() {
-  const teamMembers = [
-    {
-      id: 1,
-      name: "James Mitchell, PE",
-      role: "Principal Engineer & Founder",
-      description: "25+ years of experience in civil engineering with expertise in large-scale infrastructure projects.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300",
-      specialties: ["MS Civil Engineering", "PE Licensed"],
-      email: "james@sterlingcivil.com",
-      linkedin: "#"
-    },
-    {
-      id: 2,
-      name: "Sarah Thompson, PE",
-      role: "Senior Project Manager",
-      description: "Specializes in environmental engineering and sustainable infrastructure development.",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300",
-      specialties: ["Environmental Engineering", "LEED AP"],
-      email: "sarah@sterlingcivil.com",
-      linkedin: "#"
-    },
-    {
-      id: 3,
-      name: "Michael Rodriguez, PE",
-      role: "Structural Engineering Director",
-      description: "Expert in structural analysis and design with focus on seismic engineering and bridge design.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300",
-      specialties: ["Structural Engineering", "Bridge Design"],
-      email: "michael@sterlingcivil.com",
-      linkedin: "#"
-    },
-    {
-      id: 4,
-      name: "Emily Chen, PE",
-      role: "Transportation Engineer",
-      description: "Transportation planning and traffic engineering specialist with smart city expertise.",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300",
-      specialties: ["Transportation", "Smart Cities"],
-      email: "emily@sterlingcivil.com",
-      linkedin: "#"
-    },
-    {
-      id: 5,
-      name: "David Kim",
-      role: "Construction Manager",
-      description: "Construction oversight and quality control specialist with 15+ years of field experience.",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300",
-      specialties: ["Construction Management", "Safety Management"],
-      email: "david@sterlingcivil.com",
-      linkedin: "#"
-    },
-    {
-      id: 6,
-      name: "Lisa Park",
-      role: "Water Resources Engineer",
-      description: "Hydraulic modeling and stormwater management expert with focus on sustainable solutions.",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=300",
-      specialties: ["Water Resources", "Hydraulic Modeling"],
-      email: "lisa@sterlingcivil.com",
-      linkedin: "#"
+  const { data: teamMembers = [], isLoading, error } = useQuery<TeamMember[]>({
+    queryKey: ["team_members"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("team_members")
+        .select("*")
+        .order("name", { ascending: true });
+      if (error) throw error;
+      return data || [];
     }
-  ];
+  });
 
+  if (isLoading) {
+    return <div className="container mx-auto px-6 py-24 text-center">Loading team members...</div>;
+  }
+  if (error) {
+    return <div className="container mx-auto px-6 py-24 text-center text-red-600">Failed to load team: {error.message}</div>;
+  }
+
+  // Departments data for Team Stats section
   const departments = [
     {
       name: "Structural Engineering",
@@ -86,7 +56,7 @@ export default function Team() {
     {
       name: "Water Resources",
       count: 10,
-      description: "Hydraulic modeling, stormwater management, and water treatment"
+      description: "Stormwater management, flood control, and water quality"
     },
     {
       name: "Urban Planning",
@@ -124,9 +94,9 @@ export default function Team() {
             {teamMembers.map((member) => (
               <Card key={member.id} className="text-center group hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-8">
-                  <img 
-                    src={member.image} 
-                    alt={member.name} 
+                  <img
+                    src={member.image_url || "https://placehold.co/300x300?text=No+Image"}
+                    alt={member.name}
                     className="w-24 h-24 rounded-full mx-auto mb-6 group-hover:scale-105 transition-transform duration-300"
                   />
                   
@@ -137,7 +107,7 @@ export default function Team() {
                   </p>
                   
                   <div className="flex flex-wrap gap-2 justify-center mb-6">
-                    {member.specialties.map((specialty, index) => (
+                    {member.specialties?.map((specialty, index) => (
                       <Badge key={index} variant="secondary" className="text-xs">
                         {specialty}
                       </Badge>
@@ -145,12 +115,20 @@ export default function Team() {
                   </div>
                   
                   <div className="flex justify-center space-x-4">
-                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary">
-                      <Linkedin className="w-5 h-5" />
-                    </Button>
-                    <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-primary">
-                      <Mail className="w-5 h-5" />
-                    </Button>
+                    {member.linkedin && (
+                      <Button variant="ghost" size="icon" asChild>
+                        <a href={member.linkedin} target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                          <Linkedin className="w-5 h-5" />
+                        </a>
+                      </Button>
+                    )}
+                    {member.email && (
+                      <Button variant="ghost" size="icon" asChild>
+                        <a href={`mailto:${member.email}`} title="Email">
+                          <Mail className="w-5 h-5" />
+                        </a>
+                      </Button>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -185,7 +163,7 @@ export default function Team() {
 
           {/* Departments */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {departments.map((department, index) => (
+            {departments.map((department: { name: string; count: number; description: string }, index: number) => (
               <Card key={index}>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-4">
@@ -275,6 +253,5 @@ export default function Team() {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>  );
 }

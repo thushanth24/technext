@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,78 +18,30 @@ export default function Projects() {
     { id: "water", label: "Water Resources" }
   ];
 
-  const projects = [
-    {
-      id: 1,
-      title: "Metropolitan Bridge Project",
-      category: "infrastructure",
-      categoryLabel: "Infrastructure",
-      budget: "$25M",
-      year: "2023",
-      description: "A $25M cable-stayed bridge project featuring innovative design and sustainable materials.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Bridge Design", "Structural Engineering", "Sustainable Materials"]
+  // Fetch projects from Supabase
+  const { data: projects = [], isLoading, error } = useQuery({
+    queryKey: ["projects"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .order('year', { ascending: false });
+      if (error) throw error;
+      return data;
     },
-    {
-      id: 2,
-      title: "Green Energy Infrastructure",
-      category: "environmental",
-      categoryLabel: "Environmental",
-      budget: "$18M",
-      year: "2023",
-      description: "Sustainable energy infrastructure supporting renewable power generation and distribution.",
-      image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Solar Energy", "Grid Integration", "Environmental Impact"]
-    },
-    {
-      id: 3,
-      title: "Downtown Revitalization",
-      category: "urban",
-      categoryLabel: "Urban Planning",
-      budget: "$45M",
-      year: "2022",
-      description: "Comprehensive urban renewal project transforming 50 acres of downtown core infrastructure.",
-      image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Urban Design", "Mixed-Use Development", "Community Planning"]
-    },
-    {
-      id: 4,
-      title: "Water Treatment Facility",
-      category: "water",
-      categoryLabel: "Water Resources",
-      budget: "$32M",
-      year: "2022",
-      description: "State-of-the-art water treatment plant serving 500,000 residents with advanced filtration systems.",
-      image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Water Treatment", "Environmental Engineering", "Public Health"]
-    },
-    {
-      id: 5,
-      title: "Commercial Complex Development",
-      category: "infrastructure",
-      categoryLabel: "Infrastructure",
-      budget: "$28M",
-      year: "2021",
-      description: "Mixed-use development with integrated transportation and utility infrastructure planning.",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Commercial Development", "Infrastructure Integration", "Transportation Planning"]
-    },
-    {
-      id: 6,
-      title: "Wetland Restoration Project",
-      category: "environmental",
-      categoryLabel: "Environmental",
-      budget: "$8M",
-      year: "2021",
-      description: "Ecological restoration of 200-acre wetland system with sustainable stormwater management.",
-      image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Ecological Restoration", "Stormwater Management", "Biodiversity Conservation"]
-    }
-  ];
+  });
 
   const filteredProjects = activeFilter === "all" 
     ? projects 
-    : projects.filter(project => project.category === activeFilter);
+    : projects.filter((project: any) => project.category === activeFilter);
+
+  if (isLoading) {
+    return <div className="container mx-auto px-6 py-24 text-center">Loading projects...</div>;
+  }
+
+  if (error) {
+    return <div className="container mx-auto px-6 py-24 text-center text-red-600">Failed to load projects: {error.message}</div>;
+  }
 
   const getCategoryColor = (category: string) => {
     switch (category) {

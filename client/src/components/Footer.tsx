@@ -45,7 +45,7 @@ export default function Footer() {
               <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
                 <Building className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold text-accent">Sterling Civil</span>
+              <span className="text-xl font-bold text-accent">Technext</span>
             </Link>
             <p className="text-gray-400 mb-6 leading-relaxed">
               Leading civil engineering firm providing innovative infrastructure solutions for over 25 years.
