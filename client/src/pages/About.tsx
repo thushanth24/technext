@@ -46,9 +46,8 @@ export default function About() {
               Engineering Excellence Since 1998
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Sterling Civil Engineering was founded with a vision to create innovative, sustainable infrastructure 
-              solutions that enhance communities and protect the environment. Over 25 years later, we continue 
-              to lead the industry in engineering excellence.
+            Our engineers are well versed in all Civil, Structural and Geotechnicql engineering terms and have  extensive experience in design and construction of infrastructure projects such as roads, tunnels,  bridges, and supporting structures. We support our clients throughout the whole project cycle, from  feasibility studies to the final completion of the project, to periodic inspections.
+
             </p>
           </div>
         </div>
@@ -63,7 +62,7 @@ export default function About() {
                 Our Story
               </h2>
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Founded in 1998 by a team of visionary engineers, Sterling Civil Engineering began as a small firm 
+                Founded in 1998 by a team of visionary engineers, Technext Consultants began as a small firm 
                 with big ambitions. We believed that civil engineering could be a force for positive change, 
                 creating infrastructure that not only serves communities but also protects and enhances the environment.
               </p>
@@ -101,7 +100,7 @@ export default function About() {
             <div className="relative">
               <img 
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-                alt="Sterling Civil Engineering headquarters" 
+                alt="Technext Consultants headquarters" 
                 className="rounded-xl shadow-2xl w-full h-auto"
               />
               
@@ -200,7 +199,7 @@ export default function About() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Leadership Team</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our leadership team brings decades of combined experience and a shared vision for the future of civil engineering.
+              Our leadership team brings combined experience and a shared vision for the future of civil engineering.
             </p>
           </div>
 

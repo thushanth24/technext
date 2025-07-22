@@ -15,69 +15,112 @@ import {
 export default function Services() {
   const services = [
     {
-      icon: TrafficCone,
-      title: "Infrastructure Design",
-      description: "Complete design services for transportation networks, utilities, and public infrastructure projects.",
+      icon: () => <span>🏗️</span>,
+      title: "Specialist Consultants for Geotechnical Engineering Design",
+      description: "",
       features: [
-        "Highway & TrafficCone Design",
-        "Bridge Engineering", 
-        "Utility Systems",
-        "Traffic Engineering"
+        "All types of ground work design, Deep Excavation",
+        "Basement Excavation Design for basement construction",
+        "Slope stability analyses & Ground Improvement",
+        "Earth Retaining & Stabilizing Structure (ERSS)",
+        "Geotechnical Building Work (GBW) Design",
+        "Soil Nail & Ground Anchor Design",
+        "Tunnelling & Pipe Jacking Design",
+        "Deep trench excavation and caisson design",
+        "Deep & Shallow Foundation Design"
       ]
     },
     {
-      icon: HardHat,
-      title: "Construction Management",
-      description: "Comprehensive project oversight ensuring quality, safety, and timely delivery within budget.",
+      icon: () => <span>🏢</span>,
+      title: "Civil and Infrastructure Design Consultancy",
+      description: "",
       features: [
-        "Project Planning",
-        "Quality Control",
-        "Safety Management", 
-        "Schedule Control"
+        "Curtain Wall, Cladding, Skylight, Façade",
+        "Underground Structure design",
+        "Canopy",
+        "Barrier design",
+        "Tentages Design and endorsement",
+        "Demolition work with the construction sequences",
+        "Road Works",
+        "Drainage Works design",
+        "General Building Works design"
       ]
     },
     {
-      icon: Leaf,
-      title: "Environmental Solutions",
-      description: "Sustainable engineering practices focused on environmental protection and resource conservation.",
+      icon: () => <span>📐</span>,
+      title: "Structural, Civil & Geotechnical engineering drawings",
+      description: "",
       features: [
-        "Impact Assessments",
-        "Remediation Services",
-        "Green Infrastructure",
-        "Sustainability Planning"
+        "MEP (M&E) Drawings",
+        "Architectural Drawings / Interior Drawings",
+        "Technical Drawings",
+        "Shop Drawings",
+        "As Built Drawings",
+        "Schematic Drawings",
+        "Revisions and Mark Up Drawings",
+        "Building Information Modelling (BIM)",
+        "3D Drawing / 3D Modelling",
+        "3D Rendering / 3D Design",
+        "3D Animation / 3D Simulation / 3D Walkthrough",
+        "3D Laser Scanning"
       ]
     },
     {
-      icon: Building,
-      title: "Urban Planning",
-      description: "Strategic development planning for sustainable, livable communities and urban spaces.",
+      icon: () => <span>🏠</span>,
+      title: "Architectural and interior designs",
+      description: "",
       features: [
-        "Master Planning",
-        "Zoning Analysis",
-        "Community Design",
-        "Land Use Planning"
+        "Architectural design & space planning",
+        "Technical planning drawings services",
+        "Spatial planning",
+        "3D drawings",
+        "Interior and exterior renovation design",
+        "Office furniture, lighting, fixture and accessory selection",
+        "Wallpaper, curtain and soft furnishing selection"
       ]
     },
     {
-      icon: Droplets,
-      title: "Water Resources",
-      description: "Comprehensive water management solutions for municipal and industrial applications.",
+      icon: () => <span>👷‍♂️</span>,
+      title: "Structural Design Consultancy",
+      description: "Building design such as",
       features: [
-        "Stormwater Management",
-        "Hydraulic Modeling",
-        "Flood Control",
-        "Water Treatment"
+        "High Rise Building Design, Addition and alteration work to the existing building, Bungalow & Detached house design & Reconstruction houses",
+        "Factory Design",
+        "Specification and Repair Proposals to the damage structural elements"
       ]
     },
     {
-      icon: TrendingUp,
-      title: "Structural Analysis",
-      description: "Advanced structural engineering using state-of-the-art analysis and design software.",
+      icon: () => <span>🛠️</span>,
+      title: "Structural Inspection",
+      description: "",
       features: [
-        "Building Design",
-        "Bridge Analysis",
-        "Seismic Engineering",
-        "Specialty Structures"
+        "Periodic Structural Inspection"
+      ]
+    },
+    {
+      icon: () => <span>🔧</span>,
+      title: "Specialist Engineering Works",
+      description: "",
+      features: [
+        "Qualified Erosion Control Professional",
+        "Design for safety professional consultancy services",
+        "Design of Water, Drainage and Sewer"
+      ]
+    },
+    {
+      icon: () => <span>🧮</span>,
+      title: "Value Engineering Services",
+      description: "",
+      features: [
+        "Value engineering design and consultancy to do the economical design"
+      ]
+    },
+    {
+      icon: () => <span>✅</span>,
+      title: "Tender / Feasibility stages design",
+      description: "",
+      features: [
+        "Provide technical, financial, legal and sustainable viability for a tender project"
       ]
     }
   ];
@@ -130,7 +173,9 @@ export default function Services() {
               <Card key={index} className="hover:shadow-xl transition-all duration-300">
                 <CardContent className="p-8">
                   <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
-                    <service.icon className="w-8 h-8 text-primary" />
+                    {typeof service.icon === 'function' && service.icon.name !== ''
+                      ? <service.icon />
+                      : null}
                   </div>
                   <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
                   <p className="text-muted-foreground mb-6">

@@ -1,96 +1,99 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
 
+import { useRef } from "react";
+
+function ProjectImageSlider({ images, title }: { images: string[]; title: string }) {
+  const [index, setIndex] = useState(0);
+  const [hovered, setHovered] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (hovered && images.length > 1) {
+      intervalRef.current = setInterval(() => {
+        setIndex((prev) => (prev + 1) % images.length);
+      }, 2000);
+    } else if (!hovered) {
+      setIndex(0);
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [hovered, images]);
+
+  const imgSrc = images && images.length > 0 ? images[index] : "https://via.placeholder.com/600x400?text=No+Image";
+
+  return (
+    <div
+      className="relative overflow-hidden rounded-t-lg"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ minHeight: "12rem" }}
+    >
+      <img
+        src={imgSrc}
+        alt={title}
+        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+      />
+      {images.length > 1 && (
+        <div className="absolute bottom-2 right-2 flex gap-1">
+          {images.map((_, i) => (
+            <span
+              key={i}
+              className={`block w-2 h-2 rounded-full ${i === index ? "bg-white" : "bg-gray-400 opacity-50"}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Projects() {
   const [activeFilter, setActiveFilter] = useState("all");
+  const [categories, setCategories] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filterOptions = [
-    { id: "all", label: "All Projects" },
-    { id: "infrastructure", label: "Infrastructure" },
-    { id: "environmental", label: "Environmental" },
-    { id: "urban", label: "Urban Planning" },
-    { id: "water", label: "Water Resources" }
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const { data: catData, error: catError } = await supabase
+          .from('project_categories')
+          .select('*')
+          .order('name');
+        if (catError) throw catError;
+        setCategories([{ id: 'all', name: 'All Projects' }, ...(catData || [])]);
 
-  const projects = [
-    {
-      id: 1,
-      title: "Metropolitan Bridge Project",
-      category: "infrastructure",
-      categoryLabel: "Infrastructure",
-      budget: "$25M",
-      year: "2023",
-      description: "A $25M cable-stayed bridge project featuring innovative design and sustainable materials.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Bridge Design", "Structural Engineering", "Sustainable Materials"]
-    },
-    {
-      id: 2,
-      title: "Green Energy Infrastructure",
-      category: "environmental",
-      categoryLabel: "Environmental",
-      budget: "$18M",
-      year: "2023",
-      description: "Sustainable energy infrastructure supporting renewable power generation and distribution.",
-      image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Solar Energy", "Grid Integration", "Environmental Impact"]
-    },
-    {
-      id: 3,
-      title: "Downtown Revitalization",
-      category: "urban",
-      categoryLabel: "Urban Planning",
-      budget: "$45M",
-      year: "2022",
-      description: "Comprehensive urban renewal project transforming 50 acres of downtown core infrastructure.",
-      image: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Urban Design", "Mixed-Use Development", "Community Planning"]
-    },
-    {
-      id: 4,
-      title: "Water Treatment Facility",
-      category: "water",
-      categoryLabel: "Water Resources",
-      budget: "$32M",
-      year: "2022",
-      description: "State-of-the-art water treatment plant serving 500,000 residents with advanced filtration systems.",
-      image: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Water Treatment", "Environmental Engineering", "Public Health"]
-    },
-    {
-      id: 5,
-      title: "Commercial Complex Development",
-      category: "infrastructure",
-      categoryLabel: "Infrastructure",
-      budget: "$28M",
-      year: "2021",
-      description: "Mixed-use development with integrated transportation and utility infrastructure planning.",
-      image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Commercial Development", "Infrastructure Integration", "Transportation Planning"]
-    },
-    {
-      id: 6,
-      title: "Wetland Restoration Project",
-      category: "environmental",
-      categoryLabel: "Environmental",
-      budget: "$8M",
-      year: "2021",
-      description: "Ecological restoration of 200-acre wetland system with sustainable stormwater management.",
-      image: "https://images.unsplash.com/photo-1547036967-23d11aacaee0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400",
-      tags: ["Ecological Restoration", "Stormwater Management", "Biodiversity Conservation"]
-    }
-  ];
+        const { data: projData, error: projError } = await supabase
+          .from('projects')
+          .select('*');
+        if (projError) throw projError;
+        setProjects(projData || []);
+      } catch (err: any) {
+        setError(err.message || 'Failed to fetch data');
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
-  const filteredProjects = activeFilter === "all" 
-    ? projects 
-    : projects.filter(project => project.category === activeFilter);
+  const filteredProjects = activeFilter === "all"
+    ? projects
+    : projects.filter((project) => project.category_id === activeFilter);
 
-  const getCategoryColor = (category: string) => {
-    switch (category) {
+  // Optionally map category id to color
+  const getCategoryColor = (categoryId: string) => {
+    switch (categoryId) {
       case "infrastructure":
         return "bg-primary/10 text-primary";
       case "environmental":
@@ -103,6 +106,14 @@ export default function Projects() {
         return "bg-secondary/10 text-secondary";
     }
   };
+
+  // Helper to get category name from id
+  const getCategoryName = (categoryId: string) => {
+    if (categoryId === 'all') return 'All Projects';
+    const cat = categories.find((c) => c.id === categoryId);
+    return cat ? cat.name : categoryId;
+  };
+
 
   return (
     <div className="flex flex-col">
@@ -126,62 +137,61 @@ export default function Projects() {
         <div className="container mx-auto px-6">
           {/* Filter Tabs */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {filterOptions.map((option) => (
+            {categories.map((cat) => (
               <Button
-                key={option.id}
-                variant={activeFilter === option.id ? "default" : "outline"}
-                onClick={() => setActiveFilter(option.id)}
+                key={cat.id}
+                variant={activeFilter === cat.id ? "default" : "outline"}
+                onClick={() => setActiveFilter(cat.id)}
                 className={cn(
                   "px-6 py-3 font-semibold",
-                  activeFilter === option.id 
+                  activeFilter === cat.id 
                     ? "bg-primary text-primary-foreground" 
                     : "hover:bg-muted"
                 )}
               >
-                {option.label}
+                {cat.name}
               </Button>
             ))}
           </div>
 
-          {/* Projects Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProjects.map((project) => (
-              <Card key={project.id} className="group hover:shadow-xl transition-all duration-300">
-                <div className="relative overflow-hidden rounded-t-lg">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <Badge className={getCategoryColor(project.category)}>
-                      {project.categoryLabel}
-                    </Badge>
-                    <span className="text-sm text-muted-foreground">{project.year}</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{project.title}</h3>
-                  <p className="text-muted-foreground mb-4">
-                    {project.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {project.tags.map((tag, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
-                        {tag}
+          {/* Loading/Error States */}
+          {loading ? (
+            <div className="text-center text-lg py-12">Loading projects...</div>
+          ) : error ? (
+            <div className="text-center text-red-500 py-12">{error}</div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProjects.map((project) => (
+                <Card key={project.id} className="group hover:shadow-xl transition-all duration-300">
+                  <ProjectImageSlider images={project.images || (project.image ? [project.image] : [])} title={project.title} />
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <Badge className={getCategoryColor(project.category_id)}>
+                        {getCategoryName(project.category_id)}
                       </Badge>
-                    ))}
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">{project.budget}</span>
-                    <Button variant="link" className="text-primary hover:underline p-0">
-                      View Details →
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                      <span className="text-sm text-muted-foreground">{project.year || project.created_at?.slice(0,4)}</span>
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3">{project.title}</h3>
+                    <p className="text-muted-foreground mb-4">
+                      {project.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {(project.tags || []).map((tag: string, index: number) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                    <div className="flex items-center justify-end">
+                      <Button variant="link" className="text-primary hover:underline p-0">
+                        View Details →
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
 
           {/* Load More */}
           <div className="text-center mt-12">
@@ -221,59 +231,6 @@ export default function Projects() {
         </div>
       </section>
 
-      {/* Featured Case Study */}
-      <section className="py-24">
-        <div className="container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <Badge className="mb-4">Featured Case Study</Badge>
-              <h2 className="text-4xl font-bold mb-6">
-                Metro Highway Expansion
-              </h2>
-              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-                Our largest infrastructure project to date, the Metro Highway Expansion represents the 
-                pinnacle of modern transportation engineering. This $45M project involved complex 
-                coordination between multiple stakeholders and innovative solutions for environmental protection.
-              </p>
-              
-              <div className="space-y-6 mb-8">
-                <div>
-                  <h4 className="font-semibold mb-2">Project Scope</h4>
-                  <p className="text-muted-foreground">
-                    12-mile highway expansion with 6 new interchanges, smart traffic systems, 
-                    and integrated stormwater management.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Innovation Highlights</h4>
-                  <p className="text-muted-foreground">
-                    First highway in the region to integrate IoT sensors for real-time traffic monitoring 
-                    and adaptive signal control systems.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Environmental Impact</h4>
-                  <p className="text-muted-foreground">
-                    40% reduction in environmental impact through innovative design and sustainable materials.
-                  </p>
-                </div>
-              </div>
-
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                View Full Case Study
-              </Button>
-            </div>
-
-            <div className="relative">
-              <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" 
-                alt="Metro Highway Expansion project" 
-                className="rounded-xl shadow-2xl w-full h-auto"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-24 bg-muted/50">

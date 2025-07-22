@@ -176,7 +176,7 @@ export default function Careers() {
               Join Our Team
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed">
-              Build your career with Sterling Civil Engineering. We're always looking for talented engineers 
+              Build your career with Technext Consultants. We're always looking for talented engineers 
               and professionals who share our passion for excellence and innovation.
             </p>
           </div>
@@ -252,12 +252,11 @@ export default function Careers() {
             {/* Benefits */}
             <Card>
               <CardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-6">Why Join Sterling Civil?</h3>
+                <h3 className="text-2xl font-semibold mb-6">Why Join Technext Consultants?</h3>
                 
                 <div className="space-y-4">
                   {[
                     "Competitive salary and performance bonuses",
-                    "Comprehensive health, dental, and vision insurance",
                     "401(k) with company matching",
                     "Professional development and continuing education",
                     "Flexible work arrangements and remote options",

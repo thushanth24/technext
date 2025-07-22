@@ -137,48 +137,6 @@ export default function Team() {
         </div>
       </section>
 
-      {/* Team Stats */}
-      <section className="py-24 bg-muted/50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Our Team by the Numbers</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We're proud of our diverse, talented team that brings together expertise from across the civil engineering spectrum.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center mb-16">
-            {[
-              { number: "75+", label: "Team Members" },
-              { number: "50+", label: "Licensed Engineers" },
-              { number: "200+", label: "Years Combined Experience" },
-              { number: "15+", label: "Specializations" }
-            ].map((stat, index) => (
-              <div key={index}>
-                <div className="text-3xl md:text-4xl font-bold text-primary dark:text-accent mb-2">{stat.number}</div>
-                <div className="text-muted-foreground">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-
-          {/* Departments */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {departments.map((department: { name: string; count: number; description: string }, index: number) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">{department.name}</h3>
-                    <Badge variant="secondary">{department.count} Engineers</Badge>
-                  </div>
-                  <p className="text-muted-foreground text-sm">
-                    {department.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Company Culture */}
       <section className="py-24">

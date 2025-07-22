@@ -30,14 +30,16 @@ export default function Header() {
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <Building className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <span className="text-xl font-bold text-primary dark:text-accent">
-            Technext
-            </span>
-          </Link>
+          <Link href="https://vqmchabrmytbadbqdwed.supabase.co/storage/v1/object/public/technext//WhatsApp%20Image%202025-07-22%20at%2009.44.05.jpeg" className="flex items-center space-x-3" target="_blank" rel="noopener noreferrer">
+  <img
+    src="https://vqmchabrmytbadbqdwed.supabase.co/storage/v1/object/public/technext//WhatsApp%20Image%202025-07-22%20at%2009.44.05.jpeg"
+    alt="Technext Logo"
+    className="w-10 h-10 rounded-lg object-cover border border-primary"
+  />
+  <span className="text-xl font-bold text-primary dark:text-accent">
+    Technext
+  </span>
+</Link>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-8">

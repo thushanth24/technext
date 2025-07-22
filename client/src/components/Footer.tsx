@@ -5,12 +5,12 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const services = [
-    { name: "Infrastructure Design", href: "/services" },
-    { name: "Construction Management", href: "/services" },
-    { name: "Environmental Solutions", href: "/services" },
-    { name: "Urban Planning", href: "/services" },
-    { name: "Water Resources", href: "/services" },
-    { name: "Structural Analysis", href: "/services" }
+    { name: "Specialist Consultants for Geotechnical Engineering Design", href: "/services" },
+    { name: "Civil and Infrastructure Design Consultancy", href: "/services" },
+    { name: "Structural, Civil & Geotechnical engineering drawings", href: "/services" },
+    { name: "Architectural and interior designs", href: "/services" },
+    { name: "Structural Design Consultancy", href: "/services" },
+    { name: "Structural Inspection", href: "/services" }
   ];
 
   const company = [
@@ -42,11 +42,13 @@ export default function Footer() {
           {/* Company Info */}
           <div>
             <Link href="/" className="flex items-center space-x-3 mb-6">
-              <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center">
-                <Building className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-xl font-bold text-accent">Technext</span>
-            </Link>
+  <img
+    src="https://vqmchabrmytbadbqdwed.supabase.co/storage/v1/object/public/technext//WhatsApp%20Image%202025-07-22%20at%2009.44.05.jpeg"
+    alt="Technext Logo"
+    className="w-10 h-10 rounded-lg object-cover border border-accent"
+  />
+  <span className="text-xl font-bold text-accent">Technext</span>
+</Link>
             <p className="text-gray-400 mb-6 leading-relaxed">
               Leading civil engineering firm providing innovative infrastructure solutions for over 25 years.
             </p>
@@ -105,18 +107,18 @@ export default function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-accent mt-1 flex-shrink-0" />
                 <span className="text-gray-400">
-                  1250 Engineering Plaza<br />
-                  Suite 400<br />
-                  San Francisco, CA 94105
+                  No 30 , Kodikamam Road<br />
+                  Nelliady , Jaffna<br />
+                  Sri Lanka
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-accent flex-shrink-0" />
-                <span className="text-gray-400">(415) 555-0123</span>
+                <span className="text-gray-400">(+94) 74-344-5066</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-accent flex-shrink-0" />
-                <span className="text-gray-400">info@sterlingcivil.com</span>
+                <span className="text-gray-400">info@technextconsultants.com</span>
               </div>
             </div>
           </div>
@@ -125,7 +127,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-gray-400 text-sm mb-4 md:mb-0">
-            © {currentYear} Sterling Civil Engineering. All rights reserved.
+            © {currentYear} Technext Consultants. All rights reserved.
           </div>
           <div className="flex space-x-6 text-sm">
             {legal.map((item, index) => (

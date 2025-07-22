@@ -42,7 +42,7 @@ export default function Home() {
               <span className="text-accent">Infrastructure</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-              Sterling Civil Engineering delivers innovative, sustainable solutions for complex infrastructure challenges. 
+              Technext Consultants delivers innovative, sustainable solutions for complex infrastructure challenges. 
               From concept to completion, we engineer excellence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
@@ -210,14 +210,14 @@ export default function Home() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">What Our Clients Say</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Don't just take our word for it. Here's what our clients have to say about working with Sterling Civil Engineering.
+              Don't just take our word for it. Here's what our clients have to say about working with Technext Consultants.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                quote: "Sterling Civil exceeded our expectations on the downtown revitalization project. Their innovative approach and attention to detail resulted in a transformative infrastructure upgrade.",
+                quote: "Technext Consultants exceeded our expectations on the downtown revitalization project. Their innovative approach and attention to detail resulted in a transformative infrastructure upgrade.",
                 author: "Michael Johnson",
                 role: "City Planning Director",
                 image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
@@ -229,7 +229,7 @@ export default function Home() {
                 image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"
               },
               {
-                quote: "From initial consultation to project completion, Sterling Civil demonstrated professionalism and technical excellence. They delivered exactly what we needed, on time.",
+                quote: "From initial consultation to project completion, Technext Consultants demonstrated professionalism and technical excellence. They delivered exactly what we needed, on time.",
                 author: "David Rodriguez",
                 role: "Project Owner",
                 image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&h=150"

@@ -230,9 +230,9 @@ export default function Contact() {
                       <div>
                         <h4 className="font-semibold mb-1">Address</h4>
                         <p className="text-muted-foreground">
-                          1250 Engineering Plaza<br />
-                          Suite 400<br />
-                          San Francisco, CA 94105
+                          No 30, Kodikamam Road<br />
+                          Nelliady, Jaffna<br />
+                          Sri Lanka
                         </p>
                       </div>
                     </div>
@@ -243,7 +243,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <h4 className="font-semibold mb-1">Phone</h4>
-                        <p className="text-muted-foreground">(415) 555-0123</p>
+                        <p className="text-muted-foreground">(+94) 74-344-5066</p>
                       </div>
                     </div>
                     
@@ -253,7 +253,7 @@ export default function Contact() {
                       </div>
                       <div>
                         <h4 className="font-semibold mb-1">Email</h4>
-                        <p className="text-muted-foreground">info@sterlingcivil.com</p>
+                        <p className="text-muted-foreground">info@technextconsultants.com</p>
                       </div>
                     </div>
                     
@@ -265,7 +265,7 @@ export default function Contact() {
                         <h4 className="font-semibold mb-1">Business Hours</h4>
                         <p className="text-muted-foreground">
                           Monday - Friday: 8:00 AM - 6:00 PM<br />
-                          Saturday: 9:00 AM - 2:00 PM<br />
+                          Saturday: Closed<br />
                           Sunday: Closed
                         </p>
                       </div>
@@ -274,78 +274,24 @@ export default function Contact() {
                 </CardContent>
               </Card>
 
-              {/* Map Placeholder */}
+              {/* Map */}
               <Card>
                 <CardContent className="p-0">
-                  <div className="h-64 bg-muted rounded-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                      <p className="text-muted-foreground font-medium">Interactive Google Maps</p>
-                      <p className="text-sm text-muted-foreground">1250 Engineering Plaza, San Francisco</p>
-                    </div>
+                  <div className="h-64 rounded-lg overflow-hidden">
+                    <iframe
+                      title="Technext Consultants Location"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      referrerPolicy="no-referrer-when-downgrade"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3931.6203310910473!2d80.2004982!3d9.7981568!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3aff0334c29af68d%3A0xf534e762e689c853!2sTechnext%20Consultants%20(Pvt)%20Ltd!5e0!3m2!1sen!2slk!4v1753206044734!5m2!1sen!2slk"
+                    />
                   </div>
                 </CardContent>
               </Card>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Office Locations */}
-      <section className="py-24 bg-muted/50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Our Locations</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              We have offices strategically located to serve clients across the region with local expertise and support.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                city: "San Francisco",
-                role: "Headquarters",
-                address: "1250 Engineering Plaza, Suite 400",
-                phone: "(415) 555-0123",
-                specialties: ["Transportation", "Urban Planning", "Environmental"]
-              },
-              {
-                city: "Sacramento",
-                role: "Regional Office",
-                address: "789 Capitol Avenue, Suite 200",
-                phone: "(916) 555-0124",
-                specialties: ["Water Resources", "Infrastructure", "Municipal"]
-              },
-              {
-                city: "Los Angeles",
-                role: "Southern California Office",
-                address: "456 Wilshire Blvd, Suite 1500",
-                phone: "(213) 555-0125",
-                specialties: ["Structural", "Seismic Engineering", "Commercial"]
-              }
-            ].map((office, index) => (
-              <Card key={index}>
-                <CardContent className="p-8">
-                  <h3 className="text-xl font-semibold mb-2">{office.city}</h3>
-                  <p className="text-primary font-medium mb-4">{office.role}</p>
-                  <div className="space-y-2 mb-6 text-sm text-muted-foreground">
-                    <p>{office.address}</p>
-                    <p>{office.phone}</p>
-                  </div>
-                  <div>
-                    <h4 className="font-medium mb-2">Specialties:</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {office.specialties.map((specialty, i) => (
-                        <span key={i} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                          {specialty}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>
