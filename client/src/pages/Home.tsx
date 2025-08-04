@@ -48,7 +48,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-primary px-8 py-4 text-lg font-semibold">
+                <Button variant="outline" className="border-2 border-white text-yellow-600 hover:bg-white hover:text-primary px-8 py-4 text-lg font-semibold">
                   Get a Quote
                 </Button>
               </Link>
@@ -73,41 +73,48 @@ export default function Home() {
               {
                 icon: TrafficCone,
                 title: "Infrastructure Design",
-                description: "Comprehensive design services for roads, bridges, utilities, and transportation systems that form the backbone of modern communities."
+                description: "Comprehensive design services for roads, bridges, utilities, and transportation systems that form the backbone of modern communities.",
+                color: "from-blue-600 to-blue-800"
               },
               {
                 icon: HardHat,
                 title: "Construction Management",
-                description: "Full-service project management from planning to completion, ensuring quality, safety, and adherence to schedules and budgets."
+                description: "Full-service project management from planning to completion, ensuring quality, safety, and adherence to schedules and budgets.",
+                color: "from-amber-600 to-amber-800"
               },
               {
                 icon: Leaf,
                 title: "Environmental Solutions",
-                description: "Sustainable engineering practices including environmental impact assessments, remediation, and green infrastructure solutions."
+                description: "Sustainable engineering practices including environmental impact assessments, remediation, and green infrastructure solutions.",
+                color: "from-emerald-600 to-emerald-800"
               },
               {
                 icon: Building,
                 title: "Urban Planning",
-                description: "Strategic planning and design for sustainable urban development, zoning analysis, and community infrastructure optimization."
+                description: "Strategic planning and design for sustainable urban development, zoning analysis, and community infrastructure optimization.",
+                color: "from-indigo-600 to-indigo-800"
               },
               {
                 icon: Droplets,
                 title: "Water Resources",
-                description: "Water management systems, stormwater solutions, hydraulic modeling, and flood mitigation infrastructure design."
+                description: "Water management systems, stormwater solutions, hydraulic modeling, and flood mitigation infrastructure design.",
+                color: "from-sky-600 to-sky-800"
               },
               {
                 icon: TrendingUp,
                 title: "Structural Analysis",
-                description: "Advanced structural engineering and analysis for buildings, bridges, and specialized structures using cutting-edge technology."
+                description: "Advanced structural engineering and analysis for buildings, bridges, and specialized structures using cutting-edge technology.",
+                color: "from-violet-600 to-violet-800"
               }
             ].map((service, index) => (
-              <Card key={index} className="group hover:shadow-xl transition-all duration-300">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-                    <service.icon className="w-8 h-8 text-primary" />
+              <Card key={index} className="group hover:shadow-xl transition-all duration-300 overflow-hidden relative">
+                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                <CardContent className="p-8 relative z-10">
+                  <div className={`w-16 h-16 bg-gradient-to-br ${service.color} rounded-xl flex items-center justify-center mb-6 text-white`}>
+                    <service.icon className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-4">{service.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">
+                  <h3 className="text-xl font-semibold mb-4 text-foreground">{service.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed group-hover:text-foreground/90 transition-colors">
                     {service.description}
                   </p>
                 </CardContent>
