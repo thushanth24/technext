@@ -2,7 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useQuery } from "@tanstack/react-query";
+
 import { 
   Building, 
   TrafficCone, 
@@ -16,11 +16,7 @@ import {
 } from "lucide-react";
 
 export default function Home() {
-  const { data: blogPosts = [] } = useQuery({
-    queryKey: ["/api/blog"],
-  });
 
-  const featuredPosts = blogPosts.slice(0, 3);
 
   return (
     <div className="flex flex-col">
@@ -262,62 +258,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Blog Preview */}
-      {featuredPosts.length > 0 && (
-        <section className="py-24">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">Latest Insights</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Stay informed with the latest trends and innovations in civil engineering.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {featuredPosts.map((post) => (
-                <Card key={post.id} className="group hover:shadow-xl transition-all duration-300">
-                  <div className="relative overflow-hidden rounded-t-lg">
-                    <img 
-                      src={post.imageUrl} 
-                      alt={post.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <Badge variant="secondary">{post.category}</Badge>
-                      <span className="text-sm text-muted-foreground">
-                        {new Date(post.publishedAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </h3>
-                    <p className="text-muted-foreground mb-4 leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{post.author}</span>
-                      <Link href={`/blog/${post.slug}`} className="text-primary hover:underline font-medium">
-                        Read More →
-                      </Link>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <div className="text-center mt-12">
-              <Link href="/blog">
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg font-semibold">
-                  View All Articles
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
     </div>
   );
 }
